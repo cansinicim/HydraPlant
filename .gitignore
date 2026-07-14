@@ -1,0 +1,24 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+*.moved-aside
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Secrets / signing (see .claude/settings.json deny list)
+Config/Local.xcconfig
+*.p12
+*.mobileprovision
+*.cer
+
+# Claude personal
+.claude/settings.local.json
+
+# macOS
+.DS_Store

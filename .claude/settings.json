@@ -1,0 +1,53 @@
+{
+  "$comment": "HydraPlant — .claude/settings.json. Shared in repo (team-wide). Personal settings go to .claude/settings.local.json.",
+
+  "permissions": {
+    "allow": [
+      "Bash(./scripts/verify.sh)",
+      "Bash(./scripts/verify-imports.sh)",
+      "Bash(./scripts/lint-copy.sh)",
+      "Bash(./scripts/check-safety-comments.sh)",
+      "Bash(xcodebuild:*)",
+      "Bash(swift build:*)",
+      "Bash(swift test:*)",
+      "Bash(swiftlint:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(gh pr merge:*)",
+      "Read(./Config/Local.xcconfig)",
+      "Read(./**/*.p12)",
+      "Read(./**/*.mobileprovision)"
+    ]
+  },
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "./.claude/hooks/guard-safety-critical.sh", "timeout": 20 }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "./.claude/hooks/format-and-verify.sh", "timeout": 300 }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "./scripts/verify.sh", "timeout": 600 }
+        ]
+      }
+    ]
+  }
+}
